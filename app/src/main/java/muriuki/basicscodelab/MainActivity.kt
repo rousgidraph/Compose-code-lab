@@ -1,5 +1,6 @@
 package muriuki.basicscodelab
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,6 +33,16 @@ import androidx.compose.ui.unit.dp
 import muriuki.basicscodelab.ui.theme.BasicsCodelabTheme
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.ui.res.stringResource
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +50,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BasicsCodelabTheme {
-                Greetings()
+                myApp()
             }
         }
     }
@@ -81,22 +92,42 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 .weight(1f)
                 .padding(bottom = extraPadding.coerceAtLeast(0.dp))) {
                 Text(text = "Hello ", modifier)
-                Text(text = name)
+                Text(text = name ,  style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.ExtraBold
+                ))
+                if (expanded) {
+                    Text(
+                        text = ("Composem ipsum color sit lazy, " +
+                                "padding theme elit, sed do bouncy. ").repeat(4),
+                    )
+                }
             }
-            ElevatedButton (onClick = {
-                expanded = !expanded
-            } ){
-                Text(if (expanded) "Show less" else "Show more")
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Filled.ExpandLess else Filled.ExpandMore,
+                    contentDescription = if (expanded) {
+                        stringResource(R.string.show_less)
+                    } else {
+                        stringResource(R.string.show_more)
+                    }
+                )
             }
         }
     }
 }
 
+@Preview(showBackground = true,
+    widthDp = 320,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "GreetingPreviewDark")
 @Preview(showBackground = true ,  widthDp = 320)
 @Composable
 fun GreetingPreview() {
-    Greetings()
+    BasicsCodelabTheme {
+        Greetings()
+    }
 }
+
 
 
 //@Preview
